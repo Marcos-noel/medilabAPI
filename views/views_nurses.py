@@ -85,4 +85,20 @@ class ViewInvoiceDetails(Resource):
           # then convert json string to json oject
         return json.loads(jsonStr)
                     
- 
+class ChangePass(Resource):
+    def post(self):
+        json = request.json
+        nurse_id = json['nurse_id']
+        current_password = json['current_password']
+        new_password = json['new_password']
+        confirm_password = json['confim password']
+        # select using the nurse_id, if nurse does not exist, give a jsonify message
+        # if nurse exists get the hashed password
+        # verify if current password and hashed password are ok
+        # Verify if current password is ok for the nurse_id.
+        # if current password is verified false , give message - current is wrong
+        # if verified True , then confirm  that new password and confirm_password are same
+        # if they are not same, send a message
+        # if they are same then, hash new_password and update query under the nurse_id, update password using the nurse_id
+        # give a message password updated
+        # Go login with the new password
