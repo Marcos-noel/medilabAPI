@@ -86,15 +86,61 @@ class ViewInvoiceDetails(Resource):
         return json.loads(jsonStr)
                     
 class ChangePass(Resource):
-    def post(self):
+    def put(self):
         json = request.json
         nurse_id = json['nurse_id']
         current_password = json['current_password']
         new_password = json['new_password']
-        confirm_password = json['confim password']
-        # select using the nurse_id, if nurse does not exist, give a jsonify message
-        # if nurse exists get the hashed password
-        # verify if current password and hashed password are ok
+        confirm_password = json['confirm_password']
+
+ # select using the nurse_id, if nurse does not exist, give a jsonify message
+        sql = '''select * from Nurses where nurse_id =%s'''
+
+        connection = pymysql.connect(host='localhost',
+                                      user='root',
+                                      password='',
+                                      database='medilab')
+        
+     
+        cursor = connection.cursor(pymysql.cursors.DictCursor)
+        cursor.execute(sql,nurse_id)
+        count = cursor.rowcount
+        if count == 0:
+                return jsonify({'message': 'User does not exist'})
+        else:
+                #user exists
+                member = cursor.fetchone()
+                hashed_password = member['password'] # this password is hashed
+                # if nurse exists get the hashed password
+                # verify if current password and hashed password are ok
+                # Jane proided a plain password
+                if hash_verify(current_password,hashed_password):
+                    if new_password != confirm_password:
+                        return jsonify({'message': 'Password Do Not Match'})
+                    else:
+                        sql = '''update Nurses Set password =%s where nurse_id=%s'''
+                        cursor = connection.cursor()
+                        data = (hash_password(new_password),nurse_id)
+                        try:
+                            cursor.execute(sql,data)
+                            connection.commit()
+                            return jsonify({'message':'Password Changed'})
+                        except:connection.rollback()
+                        connection.commit()
+                        return jsonify({'message':'Error in changing the password'})
+                else:
+                    return jsonify({'message':'current password is wrong'})
+
+            
+                
+
+              
+                    
+                
+
+       
+        
+        
         # Verify if current password is ok for the nurse_id.
         # if current password is verified false , give message - current is wrong
         # if verified True , then confirm  that new password and confirm_password are same
@@ -102,3 +148,4 @@ class ChangePass(Resource):
         # if they are same then, hash new_password and update query under the nurse_id, update password using the nurse_id
         # give a message password updated
         # Go login with the new password
+
