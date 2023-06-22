@@ -54,7 +54,7 @@ CREATE TABLE `bookings` (
   `reg_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `latitude` varchar(100) DEFAULT NULL,
   `longitude` varchar(100) DEFAULT NULL,
-  `status` text NOT NULL DEFAULT 'Pending',
+  `status` varchar(50) NOT NULL DEFAULT 'Pending',
   `lab_id` int(11) NOT NULL,
   `invoice_no` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -98,7 +98,6 @@ CREATE TABLE `laboratories` (
   `email` varchar(300) NOT NULL,
   `phone` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `role` text NOT NULL DEFAULT 'admin',
   `reg_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

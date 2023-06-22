@@ -20,6 +20,8 @@ pip install pymysql
 pip install bcrypt
 pip install africastalking
 pip install fpdf
+flask restful
+pip install flask_jwt_extended
 
 ```
 step 4: Create a folder named views.py and place the views_nurses.py, views.py nad views_dashboard.py inside
